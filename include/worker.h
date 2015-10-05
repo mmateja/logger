@@ -3,6 +3,7 @@
 
 #include "logging_content.h"
 #include "console_writer.h"
+#include "file_writer.h"
 
 #include<thread>
 #include<mutex>
@@ -17,9 +18,11 @@ class Worker {
 	std::condition_variable queue_condition;
 	std::queue<LoggingContent> queue;
 	ConsoleWriter console_writer;
+	FileWriter file_writer;
 
 	void flush();
-	void threadMain();
+	void write_message(LoggingContent &message);
+	void thread_main();
 public:
 	Worker();
 	void log(LoggingContent &message);

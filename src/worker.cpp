@@ -1,6 +1,8 @@
 #include "worker.h"
 
-Worker::Worker() : thread(&Worker::threadMain, this) {
+Worker::Worker() :
+	thread(&Worker::thread_main, this),
+	file_writer("log.txt") {
 }
 
 void Worker::log(LoggingContent &content) {
@@ -14,11 +16,16 @@ void Worker::flush() {
 	while(!queue.empty()) {
 		content = queue.front();
 		queue.pop();
-		console_writer.write(content);
+		write_message(content);
 	}
 }
 
-void Worker::threadMain() {
+void Worker::write_message(LoggingContent &message) {
+	console_writer.write(message);
+	file_writer.write(message);
+}
+
+void Worker::thread_main() {
 	LoggingContent content;
 	while(true) {
 		{
@@ -38,7 +45,7 @@ void Worker::threadMain() {
 			content = queue.front();
 			queue.pop();
 		}
-		console_writer.write(content);
+		write_message(content);
 	}
 }
 
