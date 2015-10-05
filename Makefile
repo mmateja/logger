@@ -1,29 +1,28 @@
-TARGET   = logger-sample
+CXX = g++
 
-CXX      = g++
+INCDIR = include
+SRCDIR = src
+OBJDIR = obj
+TARGETDIR = lib
 
-INCDIR   = include
-SRCDIR   = src
-OBJDIR   = obj
-
-CFLAGS   = -Wall -std=c++11 -O0 -I$(INCDIR)/
-LDFLAGS	 = -lpthread
+CFLAGS = -Wall -std=c++11 -O3 -march=native -I$(INCDIR)/
 
 INCLUDES := $(wildcard $(INCDIR)/*.h)
-SOURCES  := $(wildcard $(SRCDIR)/*.cpp)
-OBJECTS  := $(SOURCES:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
+SOURCES := $(wildcard $(SRCDIR)/*.cpp)
+OBJECTS := $(SOURCES:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
 
-build: $(TARGET)
-
-$(TARGET): $(OBJECTS)
-	@mkdir -p $(dir $@)
-	@$(CXX) -o $@ $(CFLAGS) $(OBJECTS) $(LDFLAGS)
-	@echo "Compilation complete!"
+build: static
 
 $(OBJECTS): $(OBJDIR)/%.o : $(SRCDIR)/%.cpp $(INCLUDES)
 	@mkdir -p $(dir $@)
+	@echo -n "Compiling "$<"... "
 	@$(CXX) $(CFLAGS) -c $< -o $@
-	@echo "Compiled "$<" successfully."
+	@echo "DONE"
+
+static: $(OBJECTS)
+	@mkdir -p $(TARGETDIR)
+	@ar rcs $(TARGETDIR)/liblogger.a $(OBJECTS)
+	@echo "$(TARGETDIR)/liblogger.a compilation completed."
 
 .PHONY: build clean
 clean:
