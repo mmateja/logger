@@ -3,14 +3,8 @@
 
 #include "log_level.h"
 #include "worker.h"
-#include "logging_content.h"
 
 #include "format.h"
-
-#include<memory>
-#include<iostream>
-#include<iomanip>
-#include<chrono>
 
 class Logger {
 	const char *name;

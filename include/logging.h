@@ -3,11 +3,9 @@
 
 #include "logger.h"
 
-#include<memory>
-
 class Logging {
 public:
-	static std::shared_ptr<Logger> get_logger(const char *logger_name = "main");
+	static Logger get_logger(const char *logger_name = "main");
 };
 
 #endif /* LOGGING_H */

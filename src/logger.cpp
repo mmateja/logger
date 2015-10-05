@@ -1,6 +1,11 @@
 #include "logger.h"
 
-Logger::Logger(Worker &worker, const char *name) : name(name), worker(worker) {
+#include<iomanip>
+#include<chrono>
+
+Logger::Logger(Worker &worker, const char *name) :
+	name(name),
+	worker(worker) {
 }
 
 std::string Logger::time_string() {
