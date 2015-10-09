@@ -13,6 +13,7 @@ void Worker::log(LoggingContent &content) {
 
 void Worker::flush() {
 	LoggingContent content;
+	std::lock_guard<std::mutex> lock(queue_mutex);
 	while(!queue.empty()) {
 		content = queue.front();
 		queue.pop();
